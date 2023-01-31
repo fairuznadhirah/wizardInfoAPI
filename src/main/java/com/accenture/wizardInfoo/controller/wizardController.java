@@ -1,9 +1,14 @@
 package com.accenture.wizardInfoo.controller;
 
+import brave.Span;
+import brave.Tracer;
 import com.accenture.wizardInfoo.entity.Wizard;
 import com.accenture.wizardInfoo.repository.WizardRepository;
 import com.accenture.wizardInfoo.service.WizardService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,32 +18,37 @@ import java.util.List;
 public class wizardController {
 
     @Autowired
-    private final WizardRepository wizardRepo;
+    private WizardRepository wizardRepo;
 
     @Autowired
-    WizardService wizardService;
+    private WizardService wizardService;
+
+//    @Autowired
+//    private Tracer tracer;
+
+    private static final Logger logger = LoggerFactory.getLogger(wizardController.class);
 
     public wizardController(WizardRepository wizardRepo) {
         this.wizardRepo = wizardRepo;
     }
 
-    @GetMapping("/test")
-    public List<Wizard> getWizard_id(){
-        return wizardService.getWizards();
+    @GetMapping("/wizardAll")
+    public List<Wizard> getWizard() {
+        return wizardService.getWizardAll();
     }
 
-//    @GetMapping("/test")
-//    public List<Wizard> getWizard_id() {
-//        return wizardService.getWizards();
-//    }
+    @GetMapping("/test/{id}")
+    public ResponseEntity<Wizard> getWizard_id(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.ok().body(wizardService.getWizards(id));
+    }
 
     @PostMapping("/test/add")
-    public Wizard addWizard(@RequestBody Wizard wizard){
+    public Wizard addWizard(@RequestBody Wizard wizard) {
         return wizardService.addWizard(wizard);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteWizard(@PathVariable(value = "id") long id){
+    public void deleteWizard(@PathVariable(value = "id") long id) {
         wizardService.deleteWizard(id);
     }
 

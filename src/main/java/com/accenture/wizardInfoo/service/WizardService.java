@@ -12,31 +12,35 @@ import java.util.List;
 public class WizardService {
 
     @Autowired
-    WizardRepository repository;
+    WizardRepository wizardRepository;
 
     public Wizard addWizard(Wizard wizard){
-        return repository.save(wizard);
+        return wizardRepository.save(wizard);
     }
 
-    public List<Wizard> getWizards(){
-//        repository.findById(wizard.getId()).orElseThrow(
-//                () -> new WizardException(WizardException.INVALID_EXIST_WIZARD)
-//        );
-        return repository.findAll();
+    public Wizard getWizards(Long id){
+        return wizardRepository.findById(id).orElseThrow(
+                () -> new WizardException(WizardException.INVALID_EXIST_WIZARD)
+        );
+//        return wizardRepository.findAll();
+    }
+
+    public List<Wizard> getWizardAll(){
+        return wizardRepository.findAll();
     }
 
     public void deleteWizard(long id){
-        repository.findById(id).orElseThrow(
+        wizardRepository.findById(id).orElseThrow(
                 () -> new WizardException(WizardException.INVALID_EXIST_WIZARD)
         );
-        repository.deleteById(id);
+        wizardRepository.deleteById(id);
     }
 
     public Wizard updateWizard(Wizard wizard){
-        repository.findById(wizard.getWizard_id()).orElseThrow(
+        wizardRepository.findById(wizard.getWizard_id()).orElseThrow(
                 () -> new WizardException("Wizard with id= " + wizard.getWizard_id() + " does not exist")
                 );
-        return repository.save(wizard);
+        return wizardRepository.save(wizard);
     }
 
 }

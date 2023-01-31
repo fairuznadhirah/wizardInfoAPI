@@ -7,6 +7,4 @@ import java.util.Optional;
 
 public interface WizardRepository extends JpaRepository<Wizard, Long> {
 
-//    Optional<Wizard> findByName(String name);
-
 }
